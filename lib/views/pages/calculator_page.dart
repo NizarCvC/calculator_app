@@ -1,6 +1,7 @@
 import 'package:calculator_app/utils/theme/app_colors.dart';
 import 'package:calculator_app/utils/theme/app_theme.dart';
 import 'package:calculator_app/view_models/cubit/calculator_cubit.dart';
+import 'package:calculator_app/views/widgets/calc_history_bottom_sheet.dart';
 import 'package:calculator_app/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +35,16 @@ class CalculatorPage extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        showDragHandle: true,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) {
+                          return const CalcHistoryBottomSheet();
+                        },
+                      );
+                    },
                     label: Icon(
                       Icons.history,
                       size: size.height * 0.03,
