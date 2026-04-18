@@ -1,6 +1,9 @@
+import 'package:calculator_app/models/equation.dart';
 import 'package:calculator_app/services/local_database_services.dart';
+import 'package:calculator_app/utils/app_constants.dart';
 import 'package:calculator_app/utils/theme/app_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_guid/flutter_guid.dart';
 
 part 'calculator_state.dart';
 
@@ -11,6 +14,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
 
   String _equation = '';
   String _currentNumber = '';
+  String _result = '';
   bool _isParenthesesClosed = true;
 
   void toggleThemeMode() {
@@ -28,7 +32,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
   void addNumber(String number) {
     _equation += number;
     _currentNumber += number;
-    emit(ClickOnNumber(_equation));
+    emit(EquationChanged(_equation));
   }
 
   void addOperator(String operator) {
@@ -44,7 +48,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
 
     _equation += operator;
     _currentNumber = '';
-    emit(ClickOnOperator(_equation));
+    emit(EquationChanged(_equation));
   }
 
   void addDecimalPoint() {
@@ -60,7 +64,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
       _currentNumber += '.';
     }
 
-    emit(ClickOnDecimalPoint(_equation));
+    emit(EquationChanged(_equation));
   }
 
   void addParentheses() {
@@ -77,7 +81,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
     _equation += (_isParenthesesClosed) ? '(' : ')';
     _currentNumber = '';
     _isParenthesesClosed = !_isParenthesesClosed;
-    emit(ClickOnParentheses(_equation));
+    emit(EquationChanged(_equation));
   }
 
   void addNegative() {
@@ -111,7 +115,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
       }
     }
 
-    emit(ClickOnNegative(_equation));
+    emit(EquationChanged(_equation));
   }
 
   void calculateResult() {
@@ -131,10 +135,45 @@ class CalculatorCubit extends Cubit<CalculatorState> {
         formattedResult = result.toString();
       }
 
+      _result = formattedResult;
+      _saveToLocalDatabase();
       emit(CalculateResult(_equation, result: formattedResult));
     } catch (e) {
       emit(CalculateResult(_equation, result: 'Error'));
     }
+  }
+
+  // private methods
+  Future<List<Equation>> _prepareHistoryList() async {
+    final fetchedList = await _localDatabaseServices.getStringList(
+      AppConstants.localDatabaseKey,
+    );
+
+    if (fetchedList == null) {
+      return [];
+    }
+
+    final historyList = fetchedList.map((e) => Equation.fromJson(e)).toList();
+
+    return historyList;
+  }
+
+  Future<void> _saveToLocalDatabase() async {
+    final historyList = await _prepareHistoryList();
+
+    final equation = Equation(
+      id: Guid.generate().toString(),
+      equation: _equation,
+      result: _result,
+      createdAt: DateTime.now(),
+    );
+
+    historyList.add(equation);
+
+    await _localDatabaseServices.setStringList(
+      AppConstants.localDatabaseKey,
+      historyList.map((e) => e.toJson()).toList(),
+    );
   }
 
   bool _isParentheses(String s) {

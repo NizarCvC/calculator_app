@@ -8,9 +8,9 @@ class AppTheme {
     primaryColor: AppColors.blue,
     scaffoldBackgroundColor: AppColors.white1,
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(backgroundColor: AppColors.white2),
+      style: ElevatedButton.styleFrom(backgroundColor: AppColors.white),
     ),
-    textTheme: TextTheme(displayMedium: TextStyle(color: Colors.black)),
+    textTheme: TextTheme(displayMedium: TextStyle(color: AppColors.black)),
   );
   static ThemeData get appDarkTheme => ThemeData(
     brightness: .dark,
@@ -19,6 +19,6 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(backgroundColor: AppColors.black2),
     ),
-    textTheme: TextTheme(displayMedium: TextStyle(color: Colors.white)),
+    textTheme: TextTheme(displayMedium: TextStyle(color: AppColors.white)),
   );
 }

@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -94,6 +102,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.1"
+  flutter_guid:
+    dependency: "direct main"
+    description:
+      name: flutter_guid
+      sha256: "5d9d82bedf77ab5a626f3e3fd505f59db574169f432570c8b006e7c4533b734c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -357,6 +373,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.7"
+  typed_data:
+    dependency: transitive
+    description:
+      name: typed_data
+      sha256: f9049c039ebfeb4cf7a7104a675823cd72dba8297f264b6637062516699fa006
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
+  validators:
+    dependency: transitive
+    description:
+      name: validators
+      sha256: "884515951f831a9c669a41ed6c4d3c61c2a0e8ec6bca761a4480b28e99cecf5d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   vector_math:
     dependency: transitive
     description:
