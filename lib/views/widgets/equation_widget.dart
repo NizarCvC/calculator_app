@@ -26,9 +26,10 @@ class EquationWidget extends StatelessWidget {
           children: [
             Column(
               children: [
-                Text(equation.equation),
+                Text(equation.equation, maxLines: 1),
                 Text(
                   equation.result,
+                  maxLines: 1,
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge!.copyWith(fontWeight: .w600),

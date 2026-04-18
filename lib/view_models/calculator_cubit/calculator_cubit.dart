@@ -120,7 +120,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
 
   void calculateResult() {
     try {
-      if (_equation.isEmpty) {
+      if (_equation.isEmpty || !_isDigit(_equation[_equation.length - 1])) {
         return;
       }
 
@@ -138,6 +138,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
       _result = formattedResult;
       _saveToLocalDatabase();
       emit(CalculateResult(_equation, result: formattedResult));
+      _currentNumber = _equation = _result;
     } catch (e) {
       emit(CalculateResult(_equation, result: 'Error'));
     }

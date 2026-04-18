@@ -6,9 +6,16 @@ import 'package:calculator_app/views/widgets/calculator_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CalculatorPage extends StatelessWidget {
+class CalculatorPage extends StatefulWidget {
   const CalculatorPage({super.key});
 
+  @override
+  State<CalculatorPage> createState() => _CalculatorPageState();
+}
+
+class _CalculatorPageState extends State<CalculatorPage> {
+  final TextEditingController _calculatorTextController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -21,9 +28,9 @@ class CalculatorPage extends StatelessWidget {
           child: Column(
             children: [
               _buildAppBar(cubit, context),
-              SizedBox(height: size.height * 0.05, width: double.infinity),
+              SizedBox(height: size.height * 0.035, width: double.infinity),
               _buildCalculatorText(context, cubit),
-              SizedBox(height: size.height * 0.08, width: double.infinity),
+              SizedBox(height: size.height * 0.035, width: double.infinity),
               CalculatorGridView(cubit: cubit),
             ],
           ),
@@ -34,8 +41,17 @@ class CalculatorPage extends StatelessWidget {
 
   SizedBox _buildCalculatorText(BuildContext context, CalculatorCubit cubit) {
     final size = MediaQuery.of(context).size;
+    final textField = TextField(
+      textAlign: .end,
+      maxLength: 15,
+      controller: _calculatorTextController,
+      scrollPhysics: BouncingScrollPhysics(),
+      readOnly: true,
+      style: TextStyle(fontSize: size.height * 0.05),
+      decoration: InputDecoration(border: .none, counterText: ""),
+    );
     return SizedBox(
-      height: size.height * 0.15,
+      height: size.height * 0.2,
       width: double.infinity,
       child: Align(
         alignment: .centerRight,
@@ -45,7 +61,9 @@ class CalculatorPage extends StatelessWidget {
               current is! ChangeCalculatorThemeMode,
           builder: (context, state) {
             if (state is CalculateResult) {
+              _calculatorTextController.text = state.result;
               return Column(
+                mainAxisAlignment: .center,
                 crossAxisAlignment: .end,
                 children: [
                   Text(
@@ -54,17 +72,12 @@ class CalculatorPage extends StatelessWidget {
                       context,
                     ).textTheme.titleLarge!.copyWith(color: Colors.grey),
                   ),
-                  Text(
-                    state.result,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
+                  textField,
                 ],
               );
             } else if (state is! CalculateResult && state is EquationChanged) {
-              return Text(
-                state.equation,
-                style: Theme.of(context).textTheme.displayMedium,
-              );
+              _calculatorTextController.text = state.equation;
+              return textField;
             } else if (state is ClearCalculator) {
               return Text('', style: Theme.of(context).textTheme.displayMedium);
             } else {

@@ -58,7 +58,11 @@ class HistoryListCubit extends Cubit<HistoryListState> {
       return [];
     }
 
-    final historyList = fetchedList.map((e) => Equation.fromJson(e)).toList();
+    final historyList = fetchedList
+        .map((e) => Equation.fromJson(e))
+        .toList()
+        .reversed
+        .toList();
 
     return historyList;
   }
